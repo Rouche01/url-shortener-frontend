@@ -1,19 +1,20 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import React from "react";
-import { Action, ActionType, Url } from "./types";
+import { Action, ActionType, ErrorResponseData, ResponseData } from "./types";
+import dotenv from "dotenv";
 
-type ResponseData = Url & { id: string };
+dotenv.config();
 
-type ErrorResponseData = {
-  errors: { message: string }[];
-};
+const client = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+});
 
 const shortenUrl =
   (dispatch: React.Dispatch<Action>) => async (longUrl: string) => {
     dispatch({ type: ActionType.SetLoading, payload: true });
     try {
-      const response: AxiosResponse<ResponseData> = await axios.post(
-        "http://localhost:4000/api/url/shorten",
+      const response: AxiosResponse<ResponseData> = await client.post(
+        "/api/url/shorten",
         { longUrl }
       );
       //   console.log(response);
@@ -22,7 +23,6 @@ const shortenUrl =
     } catch (err) {
       const error = err as AxiosError<ErrorResponseData>;
       if (error.response) {
-        console.log(error.response.data.errors[0].message);
         dispatch({
           type: ActionType.SetError,
           payload: error.response.data.errors[0].message,
@@ -42,22 +42,20 @@ const fetchTopUrls =
   (dispatch: React.Dispatch<Action>) => async (limit: number) => {
     dispatch({ type: ActionType.SetLoading, payload: true });
     try {
-      const response: AxiosResponse<ResponseData[]> = await axios.get(
-        "http://localhost:4000/api/url",
+      const response: AxiosResponse<ResponseData[]> = await client.get(
+        "/api/url",
         {
           params: {
             limit,
           },
         }
       );
-      console.log(response.data);
       dispatch({ type: ActionType.GetTopUrl, payload: response.data });
       dispatch({ type: ActionType.SetLoading, payload: false });
     } catch (err) {
       const error = err as AxiosError<ErrorResponseData>;
 
       if (error.response) {
-        console.log(error.response.data.errors[0].message);
         dispatch({
           type: ActionType.SetError,
           payload: error.response.data.errors[0].message,

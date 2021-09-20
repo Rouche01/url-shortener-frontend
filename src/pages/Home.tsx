@@ -126,7 +126,6 @@ const Home: React.FC = () => {
 
   const handleUrlShorten = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    console.log(longUrl);
     if (longUrl.length > 0) {
       await shortenUrl(longUrl);
     } else {
@@ -143,7 +142,6 @@ const Home: React.FC = () => {
 
   const handleCopy = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     ev.preventDefault();
-    console.log(shortUrlRef.current?.textContent);
     navigator.clipboard.writeText(shortUrlRef.current?.textContent!);
     toast("Copied url", {
       type: "success",

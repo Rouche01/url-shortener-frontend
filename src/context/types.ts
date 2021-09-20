@@ -29,3 +29,9 @@ export type ActionsFnType = Record<
   string,
   (arg?: string | number) => Promise<void>
 >;
+
+export type ResponseData = Url & { id: string };
+
+export type ErrorResponseData = {
+  errors: { message: string }[];
+};
