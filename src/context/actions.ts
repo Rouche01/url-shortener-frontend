@@ -23,11 +23,10 @@ const shortenUrl =
     } catch (err) {
       const error = err as AxiosError<ErrorResponseData>;
       if (error.response) {
-        // dispatch({
-        //   type: ActionType.SetError,
-        //   payload: error.response.data.errors[0].message,
-        // });
-        console.log(err)
+        dispatch({
+          type: ActionType.SetError,
+          payload: error.response.data.errors[0].message,
+        });
       } else {
         dispatch({
           type: ActionType.SetError,
