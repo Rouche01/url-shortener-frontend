@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { AppContext } from "../context/DataContext";
 import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
+import { copyToClipboard } from "../utils/copy-to-clipboard";
 
 interface ButtonProps {
   primary?: boolean;
@@ -141,9 +142,11 @@ const Home: React.FC = () => {
     history.push("/top-urls");
   };
 
-  const handleCopy = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleCopy = async (
+    ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     ev.preventDefault();
-    navigator.clipboard.writeText(shortUrlRef.current?.textContent!);
+    await copyToClipboard(shortUrlRef.current?.textContent!);
     toast("Copied url", {
       type: "success",
       position: "top-center",
