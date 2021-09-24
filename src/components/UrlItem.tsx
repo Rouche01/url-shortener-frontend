@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import styled from "styled-components";
+import { copyToClipboard } from "../utils/copy-to-clipboard";
 
 interface SubTextProps {
   fontSize?: string;
@@ -70,8 +71,8 @@ const UrlItem: React.FC<UrlItemProps> = ({
 }) => {
   const shortUrlRef = useRef<HTMLParagraphElement>(null);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(shortUrlRef.current?.textContent!);
+  const handleCopy = async () => {
+    await copyToClipboard(shortUrlRef.current?.textContent!);
     toast("Copied url", {
       type: "success",
       position: "top-center",
